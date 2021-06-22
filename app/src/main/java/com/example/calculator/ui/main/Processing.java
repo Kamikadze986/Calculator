@@ -23,8 +23,8 @@ public class Processing {
     }
 
     static public String processingExpression(String item, int middleIndex) {
-        int num1 = Integer.parseInt(item.substring(0, middleIndex - 1).replaceAll("\\s+", ""));
-        int num2 = Integer.parseInt(item.substring(middleIndex + 2));
+        Long num1 = Long.parseLong(item.substring(0, middleIndex - 1).replaceAll("\\s+", ""));
+        Long num2 = Long.parseLong(item.substring(middleIndex + 2));
         char sign = item.charAt(middleIndex);
         switch (sign) {
             case '+':

@@ -14,11 +14,11 @@ import android.widget.TextView;
 
 import com.example.calculator.R;
 
-public class MainFragment extends Fragment implements View.OnClickListener  {
-    char[] signs =new char[] { '/', '*','-', '+'};
-    String item;
-    TextView number0,number1,number2,number3,number4,number5,number6,number7,
-            number8,number9,plus,minus,mult,div, numberLine,clears,resultLine,result;
+public class MainFragment extends Fragment implements View.OnClickListener {
+    char[] signs = new char[]{'/', '*', '-', '+'};
+    String item = "";
+    TextView number0, number1, number2, number3, number4, number5, number6, number7,
+            number8, number9, plus, minus, mult, div, numberLine, clears, resultLine, result;
     ImageView clear;
 
     public static Fragment newInstance() {
@@ -30,7 +30,6 @@ public class MainFragment extends Fragment implements View.OnClickListener  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        item="";
         View view = inflater.inflate(R.layout.main_fragment, container, false);
         number0 = view.findViewById(R.id.number0);
         number0.setOnClickListener(numberOnClick);
@@ -57,82 +56,92 @@ public class MainFragment extends Fragment implements View.OnClickListener  {
         plus.setOnClickListener(signOnClick);
         minus = view.findViewById(R.id.minus);
         minus.setOnClickListener(signOnClick);
-        mult= view.findViewById(R.id.mult);
+        mult = view.findViewById(R.id.mult);
         mult.setOnClickListener(signOnClick);
-        div= view.findViewById(R.id.div);
+        div = view.findViewById(R.id.div);
         div.setOnClickListener(signOnClick);
         numberLine = view.findViewById(R.id.numberLine);
 
-        result =view.findViewById(R.id.result);
+        result = view.findViewById(R.id.result);
         result.setOnClickListener(v -> processing());
 
         resultLine = view.findViewById(R.id.resultLine);
-        clear= view.findViewById(R.id.clear);
+        clear = view.findViewById(R.id.clear);
         clear.setOnClickListener(v -> {
-            if(item.length()>0){
-                if(item.charAt(item.length()-1)==' ') {
-                    item=item.substring(0,item.length()-3);
-                }else{
-                    item=item.substring(0,item.length()-1);
+            if (item.length() > 0) {
+                if (item.charAt(item.length() - 1) == ' ') {
+                    item = item.substring(0, item.length() - 3);
+                } else {
+                    item = item.substring(0, item.length() - 1);
                 }
                 numberLine.setText(item);
             }
         });
 
-        clears= view.findViewById(R.id.clears);
+        clears = view.findViewById(R.id.clears);
         clears.setOnClickListener(v -> {
-            item="";
+            item = "";
             numberLine.setText(item);
+            resultLine.setText(item);
         });
         return view;
     }
-    private View.OnClickListener numberOnClick =new View.OnClickListener(){
+
+    private View.OnClickListener numberOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            item+=((TextView) v).getText().toString();
+            item += ((TextView) v).getText().toString();
             numberLine.setText(item);
         }
     };
-    private View.OnClickListener signOnClick =new View.OnClickListener(){
+    private View.OnClickListener signOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             checkForSign((((TextView) v).getText().toString()).charAt(0));
             numberLine.setText(item);
         }
     };
-    public void checkForSign(char sign){
-        if(item.length()<1)
+
+    public void checkForSign(char sign) {
+        if (item.length() < 1)
             return;
-        if (item.length()>=3) {
-            for (int i = 0; i <signs.length ; i++) {
-                if ( item.charAt(item.length()-2) == signs[i]) {
-                    item=item.substring(0,item.length()-3);
-                    item+=" "+sign+" ";
+        if (item.length() >= 3) {
+            for (int i = 0; i < signs.length; i++) {
+                if (item.charAt(item.length() - 2) == signs[i]) {
+                    item = item.substring(0, item.length() - 3);
+                    item += " " + sign + " ";
                     return;
                 }
             }
         }
-        item+=" "+sign+" ";
+        item += " " + sign + " ";
     }
 
-    private void processing(){
-        String result=item;
-        for(int i=0;i<signs.length;i++){
-            for(int j = 0; j < result.length(); j++) {
-               if(result.charAt(j)==signs[i]){
-                   int maxIndex = Processing.searchMaxIndex(result,j+2);
-                   int minIndex = Processing.searchMinIndex(result,j-2);
-                   int nextJ=Processing.processingExpression(result.substring(minIndex,maxIndex),
-                           result.substring(minIndex+2,maxIndex).indexOf(result.charAt(j))+2).length();
-                   result=result.replace(result.substring(minIndex,maxIndex),
-                           Processing.processingExpression(result.substring(minIndex,maxIndex),
-                                   result.substring(minIndex+2,maxIndex).indexOf(result.charAt(j))+2));
-                   j=nextJ;
-               }
+    private void processing() {
+        String result = item;
+        for (char sign : signs) {
+            if (result.charAt(result.length() - 2) == sign) {
+                result = result.substring(0, result.length() - 3);
+            }
+        }
+        for (int i = 0; i < signs.length; i++) {
+            for (int j = 0; j < result.length(); j++) {
+                if (result.charAt(j) == signs[i]) {
+                    int maxIndex = Processing.searchMaxIndex(result, j + 2);
+                    int minIndex = Processing.searchMinIndex(result, j - 2);
+                    int nextJ = Processing.processingExpression(result.substring(minIndex, maxIndex),
+                            result.substring(minIndex + 2, maxIndex).indexOf(result.charAt(j)) + 2).length();
+                    result = result.replace(result.substring(minIndex, maxIndex),
+                            Processing.processingExpression(result.substring(minIndex, maxIndex),
+                                    result.substring(minIndex + 2, maxIndex).indexOf(result.charAt(j)) + 2));
+                    j = nextJ;
+                }
             }
         }
         resultLine.setText(result);
     }
+
     @Override
-    public void onClick(View v) {}
+    public void onClick(View v) {
+    }
 }
