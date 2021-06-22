@@ -35,6 +35,8 @@ public class Processing {
    case '*':
     return " "+ num1*num2;
    case '/':
+    if (num1==0)
+     return " 0";
     return " "+ num1/num2;
    default:
     return item;

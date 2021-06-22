@@ -15,9 +15,9 @@ import android.widget.TextView;
 import com.example.calculator.R;
 
 public class MainFragment extends Fragment implements View.OnClickListener  {
-    char[] signs =new char[] { '/', '*','+', '-'};
+    char[] signs =new char[] { '/', '*','-', '+'};
     String item;
-    TextView number1,number2,number3,number4,number5,number6,number7,
+    TextView number0,number1,number2,number3,number4,number5,number6,number7,
             number8,number9,plus,minus,mult,div, numberLine,clears,resultLine,result;
     ImageView clear;
 
@@ -32,6 +32,8 @@ public class MainFragment extends Fragment implements View.OnClickListener  {
                              @Nullable Bundle savedInstanceState) {
         item=new String("");
         View view = inflater.inflate(R.layout.main_fragment, container, false);
+        number0 = (TextView) view.findViewById(R.id.number0);
+        number0.setOnClickListener(numberOnClick);
         number1 = (TextView) view.findViewById(R.id.number1);
         number1.setOnClickListener(numberOnClick);
         number2 = (TextView) view.findViewById(R.id.number2);
@@ -133,10 +135,10 @@ public class MainFragment extends Fragment implements View.OnClickListener  {
                    int maxIndex = Processing.serchMaxIndex(result,j+2);
                    int minIndex = Processing.serchMinIndex(result,j-2);
                    int nextJ=Processing.processingExpression(result.substring(minIndex,maxIndex),
-                           result.substring(minIndex,maxIndex).indexOf(result.charAt(j))).length();
+                           result.substring(minIndex+2,maxIndex).indexOf(result.charAt(j))+2).length();
                    result=result.replace(result.substring(minIndex,maxIndex),
                            Processing.processingExpression(result.substring(minIndex,maxIndex),
-                                   result.substring(minIndex,maxIndex).indexOf(result.charAt(j))));
+                                   result.substring(minIndex+2,maxIndex).indexOf(result.charAt(j))+2));
                    j=nextJ;
                }
             }
