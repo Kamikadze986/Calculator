@@ -30,71 +30,59 @@ public class MainFragment extends Fragment implements View.OnClickListener  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        item=new String("");
+        item="";
         View view = inflater.inflate(R.layout.main_fragment, container, false);
-        number0 = (TextView) view.findViewById(R.id.number0);
+        number0 = view.findViewById(R.id.number0);
         number0.setOnClickListener(numberOnClick);
-        number1 = (TextView) view.findViewById(R.id.number1);
+        number1 = view.findViewById(R.id.number1);
         number1.setOnClickListener(numberOnClick);
-        number2 = (TextView) view.findViewById(R.id.number2);
+        number2 = view.findViewById(R.id.number2);
         number2.setOnClickListener(numberOnClick);
-        number3 = (TextView) view.findViewById(R.id.number3);
+        number3 = view.findViewById(R.id.number3);
         number3.setOnClickListener(numberOnClick);
-        number4 = (TextView) view.findViewById(R.id.number4);
+        number4 = view.findViewById(R.id.number4);
         number4.setOnClickListener(numberOnClick);
-        number5 = (TextView) view.findViewById(R.id.number5);
+        number5 = view.findViewById(R.id.number5);
         number5.setOnClickListener(numberOnClick);
-        number6 = (TextView) view.findViewById(R.id.number6);
+        number6 = view.findViewById(R.id.number6);
         number6.setOnClickListener(numberOnClick);
-        number7 = (TextView) view.findViewById(R.id.number7);
+        number7 = view.findViewById(R.id.number7);
         number7.setOnClickListener(numberOnClick);
-        number8 = (TextView) view.findViewById(R.id.number8);
+        number8 = view.findViewById(R.id.number8);
         number8.setOnClickListener(numberOnClick);
-        number9 = (TextView) view.findViewById(R.id.number9);
+        number9 = view.findViewById(R.id.number9);
         number9.setOnClickListener(numberOnClick);
 
-        plus = (TextView) view.findViewById(R.id.plus);
+        plus = view.findViewById(R.id.plus);
         plus.setOnClickListener(signOnClick);
-        minus = (TextView) view.findViewById(R.id.minus);
+        minus = view.findViewById(R.id.minus);
         minus.setOnClickListener(signOnClick);
-        mult=(TextView) view.findViewById(R.id.mult);
+        mult= view.findViewById(R.id.mult);
         mult.setOnClickListener(signOnClick);
-        div=(TextView) view.findViewById(R.id.div);
+        div= view.findViewById(R.id.div);
         div.setOnClickListener(signOnClick);
-        numberLine = (TextView) view.findViewById(R.id.numberLine);
+        numberLine = view.findViewById(R.id.numberLine);
 
         result =view.findViewById(R.id.result);
-        result.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processing();
-            }
-        });
+        result.setOnClickListener(v -> processing());
 
-        resultLine = (TextView) view.findViewById(R.id.resultLine);
-        clear=(ImageView) view.findViewById(R.id.clear);
-        clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(item.length()>0){
-                    if(item.charAt(item.length()-1)==' ') {
-                        item=item.substring(0,item.length()-3);
-                    }else{
-                        item=item.substring(0,item.length()-1);
-                    }
-
-                    numberLine.setText(item);
+        resultLine = view.findViewById(R.id.resultLine);
+        clear= view.findViewById(R.id.clear);
+        clear.setOnClickListener(v -> {
+            if(item.length()>0){
+                if(item.charAt(item.length()-1)==' ') {
+                    item=item.substring(0,item.length()-3);
+                }else{
+                    item=item.substring(0,item.length()-1);
                 }
-            }
-        });
-
-        clears=(TextView) view.findViewById(R.id.clears);
-        clears.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                item="";
                 numberLine.setText(item);
             }
+        });
+
+        clears= view.findViewById(R.id.clears);
+        clears.setOnClickListener(v -> {
+            item="";
+            numberLine.setText(item);
         });
         return view;
     }
@@ -132,8 +120,8 @@ public class MainFragment extends Fragment implements View.OnClickListener  {
         for(int i=0;i<signs.length;i++){
             for(int j = 0; j < result.length(); j++) {
                if(result.charAt(j)==signs[i]){
-                   int maxIndex = Processing.serchMaxIndex(result,j+2);
-                   int minIndex = Processing.serchMinIndex(result,j-2);
+                   int maxIndex = Processing.searchMaxIndex(result,j+2);
+                   int minIndex = Processing.searchMinIndex(result,j-2);
                    int nextJ=Processing.processingExpression(result.substring(minIndex,maxIndex),
                            result.substring(minIndex+2,maxIndex).indexOf(result.charAt(j))+2).length();
                    result=result.replace(result.substring(minIndex,maxIndex),
